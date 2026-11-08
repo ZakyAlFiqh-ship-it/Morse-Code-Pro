@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MORSE CODE PRO</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap');
+
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;padding:25px 15px;
+ background:#03090d;color:#b9ffe0;
+ font-family:'Share Tech Mono',monospace;
+ background-image:linear-gradient(#00ff8810 1px,transparent 1px),
+ linear-gradient(90deg,#00ff8810 1px,transparent 1px);
+ background-size:35px 35px;
+}
+.container{max-width:850px;margin:auto}
+header{text-align:center;padding:25px 0}
+h1{
+ font-family:Orbitron,sans-serif;color:#00ff88;
+ font-size:clamp(25px,5vw,40px);
+ text-shadow:0 0 15px #00ff88;
+ margin:10px 0;
+}
+.subtitle{color:#6bba99;letter-spacing:3px}
+.panel{
+ background:#071510ed;border:1px solid #00ff8855;
+ border-radius:15px;padding:22px;margin:18px 0;
+ box-shadow:0 0 20px #00ff8810;
+}
+.status{display:flex;align-items:center;gap:10px;color:#00ff88}
+.dot{
+ width:9px;height:9px;background:#00ff88;border-radius:50%;
+ box-shadow:0 0 12px #00ff88;animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:.2}}
+label{display:block;margin:15px 0 9px;color:#00ff88}
+textarea{
+ width:100%;height:125px;resize:vertical;
+ background:#020a07;color:#aaffcc;
+ border:1px solid #176c46;border-radius:9px;
+ padding:15px;font:16px 'Share Tech Mono';
+ outline:none;
+}
+textarea:focus{border-color:#00ff88;box-shadow:0 0 12px #00ff8833}
+.result{color:#00ff88}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{
+ flex:1;min-width:110px;padding:13px;
+ background:#063c26;border:1px solid #00ff88;
+ border-radius:8px;color:#00ff88;
+ font:14px 'Share Tech Mono';cursor:pointer;
+ transition:.2s;
+}
+button:hover{background:#00ff88;color:#001b0d;box-shadow:0 0 15px #00ff88}
+button.active{background:#00ff88;color:#001b0d}
+#light{
+ width:85px;height:85px;border-radius:50%;
+ margin:15px auto;background:#10251b;
+ border:3px solid #176c46;
+ transition:.1s;
+}
+#light.on{background:#00ff88;box-shadow:0 0 25px #00ff88,0 0 70px #00ff88}
+.center{text-align:center}
+.small{font-size:12px;color:#6bba99}
+table{width:100%;border-collapse:collapse;text-align:center}
+td,th{border:1px solid #176c46;padding:8px}
+th{color:#00ff88}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.grid div{padding:9px;background:#041e12;border:1px solid #145c39;border-radius:5px}
+footer{text-align:center;color:#39785b;padding:25px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+ <div class="status center" style="justify-content:center">
+  <span class="dot"></span> SYSTEM ONLINE
+ </div>
+ <h1>MORSE CODE PRO</h1>
+ <div class="subtitle">COMMUNICATION TERMINAL v2.0</div>
+</header>
+
+<div class="panel">
+ <div class="status"><span class="dot"></span> TRANSLATOR SYSTEM</div>
+
+ <label>INPUT TEXT / MORSE CODE</label>
+ <textarea id="input" placeholder="Masukkan pesan di sini..."></textarea>
+
+ <div class="buttons">
+  <button class="active" id="textMode" onclick="setMode('text')">TEXT → MORSE</button>
+  <button id="morseMode" onclick="setMode('morse')">MORSE → TEXT</button>
+ </div>
+
+ <label>TRANSLATION OUTPUT</label>
+ <textarea id="output" class="result" readonly placeholder="Hasil terjemahan..."></textarea>
+
+ <div class="buttons">
+  <button onclick="translate()">⚡ TRANSLATE</button>
+  <button onclick="copyOutput()">▣ COPY</button>
+  <button onclick="clearAll()">✕ CLEAR</button>
+ </div>
+</div>
+
+<div class="panel center">
+ <div class="status" style="justify-content:center">SIGNAL TRANSMISSION</div>
+ <div id="light"></div>
+ <p id="signalText" class="small">READY TO TRANSMIT</p>
+ <div class="buttons">
+  <button onclick="playSound()">▶ PLAY MORSE</button>
+  <button onclick="stopSound()">■ STOP</button>
+ </div>
+</div>
+
+<div class="panel">
+ <div class="status">MORSE CODE DICTIONARY</div>
+ <p class="small">REFERENSI KODE INTERNASIONAL</p>
+ <div class="grid" id="dictionary"></div>
+</div>
+
+<footer>
+ MORSE CODE PRO © 2026<br>
+ SECURE COMMUNICATION TERMINAL
+</footer>
+</div>
+
+<script>
+const codes={
+ A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',
+ F:'..-.',G:'--.',H:'....',I:'..',J:'.---',
+ K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',
+ P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',
+ U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..',
+ 0:'-----',1:'.----',2:'..---',3:'...--',
+ 4:'....-',5:'.....',6:'-....',7:'--...',
+ 8:'---..',9:'----.',
+ '.':'.-.-.-',',':'--..--','?':'..--..',
+ '!':'-.-.--','/':'-..-.','-':'-....-',
+ '(':'-.--.',')':'-.--.-',':':'---...',
+ ';':'-.-.-.','=':'-...-','+':'.-.-.',
+ '@':'.--.-.','&':'.-...'
+};
+
+const reverse={};
+Object.keys(codes).forEach(k=>reverse[codes[k]]=k);
+
+let mode='text';
+let audioContext=null;
+let oscillator=null;
+let playing=false;
+let stopRequested=false;
+
+const input=document.getElementById('input');
+const output=document.getElementById('output');
+const light=document.getElementById('light');
+const signalText=document.getElementById('signalText');
+
+function setMode(m){
+ mode=m;
+ document.getElementById('textMode').classList.toggle('active',m==='text');
+ document.getElementById('morseMode').classList.toggle('active',m==='morse');
+ translate();
+}
+
+function translate(){
+ const value=input.value.toUpperCase();
+ if(mode==='text'){
+  output.value=value.split('').map(c=>{
+   if(c===' ')return '/';
+   return codes[c]||'?';
+  }).join(' ');
+ }else{
+  output.value=value.trim().split(/\s*\/\s*/).map(word=>
+   word.trim().split(/\s+/).filter(Boolean).map(c=>reverse[c]||'?').join('')
+  ).join(' ');
+ }
+}
+
+input.addEventListener('input',translate);
+
+function copyOutput(){
+ if(!output.value)return;
+ navigator.clipboard.writeText(output.value)
+ .then(()=>alert('Hasil berhasil disalin!'))
+ .catch(()=>{
+  output.select();
+  document.execCommand('copy');
+  alert('Hasil berhasil disalin!');
+ });
+}
+
+function clearAll(){
+ stopSound();
+ input.value='';
+ output.value='';
+}
+
+function sleep(ms){
+ return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+async function playTone(duration){
+ if(stopRequested)return;
+ const ctx=audioContext;
+ oscillator=ctx.createOscillator();
+ const gain=ctx.createGain();
+ oscillator.type='sine';
+ oscillator.frequency.value=650;
+ gain.gain.value=0.12;
+ oscillator.connect(gain);
+ gain.connect(ctx.destination);
+ light.classList.add('on');
+ signalText.textContent='TRANSMITTING SIGNAL...';
+ oscillator.start();
+ await sleep(duration);
+ try{oscillator.stop()}catch(e){}
+ oscillator=null;
+ light.classList.remove('on');
+ await sleep(100);
+}
+
+async function playSound(){
+ if(playing)return;
+ const morse=mode==='text'?output.value:input.value.trim();
+ if(!morse){
+  alert('Masukkan teks atau kode Morse terlebih dahulu!');
+  return;
+ }
+ playing=true;
+ stopRequested=false;
+ try{
+  audioContext=new (window.AudioContext||window.webkitAudioContext)();
+  await audioContext.resume();
+
+  for(const char of morse){
+   if(stopRequested)break;
+   if(char==='.'){
+    await playTone(120);
+   }else if(char==='-'){
+    await playTone(360);
+   }else if(char==='/'){
+    await sleep(700);
+   }else if(char===' '){
+    await sleep(250);
+   }else{
+    await sleep(100);
+   }
+  }
+ }catch(e){
+  alert('Browser tidak mendukung audio.');
+ }
+ if(audioContext){
+  await audioContext.close().catch(()=>{});
+  audioContext=null;
+ }
+ light.classList.remove('on');
+ signalText.textContent=stopRequested?'TRANSMISSION STOPPED':'TRANSMISSION COMPLETE';
+ playing=false;
+}
+
+function stopSound(){
+ stopRequested=true;
+ if(oscillator){
+  try{oscillator.stop()}catch(e){}
+  oscillator=null;
+ }
+ light.classList.remove('on');
+ signalText.textContent='SIGNAL STOPPED';
+}
+
+document.getElementById('dictionary').innerHTML=
+ Object.entries(codes).map(([k,v])=>
+ `<div><b style="color:#00ff88">${k}</b> = ${v}</div>`
+ ).join('');
+
+</script>
+</body>
+</html>
