@@ -1,282 +1,251 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MORSE CODE PRO</title>
+<meta name="theme-color" content="#03090d">
+<title>MORSE CODE PRO — v3.0</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap');
-
+:root{
+ --bg:#03090d;--panel:#071510ed;--text:#b9ffe0;--muted:#6bba99;--accent:#00ff88;
+ --field:#020a07;--fieldText:#aaffcc;--border:#176c46;--button:#063c26;--buttonText:#00ff88;
+ --grid:#00ff8810;--shadow:#00ff8810;--card:#041e12;
+}
+body.light{
+ --bg:#eef8f2;--panel:#ffffffed;--text:#123b29;--muted:#527765;--accent:#00884b;
+ --field:#f5fbf7;--fieldText:#123b29;--border:#8bbda2;--button:#e3f5e9;--buttonText:#006b3b;
+ --grid:#00884b12;--shadow:#00884b14;--card:#edf8f1;
+}
 *{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;padding:25px 15px;
- background:#03090d;color:#b9ffe0;
- font-family:'Share Tech Mono',monospace;
- background-image:linear-gradient(#00ff8810 1px,transparent 1px),
- linear-gradient(90deg,#00ff8810 1px,transparent 1px);
- background-size:35px 35px;
-}
-.container{max-width:850px;margin:auto}
-header{text-align:center;padding:25px 0}
-h1{
- font-family:Orbitron,sans-serif;color:#00ff88;
- font-size:clamp(25px,5vw,40px);
- text-shadow:0 0 15px #00ff88;
- margin:10px 0;
-}
-.subtitle{color:#6bba99;letter-spacing:3px}
-.panel{
- background:#071510ed;border:1px solid #00ff8855;
- border-radius:15px;padding:22px;margin:18px 0;
- box-shadow:0 0 20px #00ff8810;
-}
-.status{display:flex;align-items:center;gap:10px;color:#00ff88}
-.dot{
- width:9px;height:9px;background:#00ff88;border-radius:50%;
- box-shadow:0 0 12px #00ff88;animation:blink 1s infinite;
-}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;padding:22px 15px;background-color:var(--bg);color:var(--text);
+ font-family:'Share Tech Mono',monospace;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:35px 35px;transition:background .2s,color .2s}
+.container{max-width:900px;margin:auto}
+header{text-align:center;padding:20px 0 16px}
+h1{font-family:Orbitron,sans-serif;color:var(--accent);font-size:clamp(25px,5vw,42px);text-shadow:0 0 15px color-mix(in srgb,var(--accent) 45%,transparent);margin:10px 0}
+.subtitle{color:var(--muted);letter-spacing:3px;font-size:14px}
+.panel{background:var(--panel);border:1px solid color-mix(in srgb,var(--accent) 38%,transparent);border-radius:15px;padding:22px;margin:18px 0;box-shadow:0 0 20px var(--shadow);backdrop-filter:blur(5px)}
+.status{display:flex;align-items:center;gap:10px;color:var(--accent);font-weight:bold}
+.dot{width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent);animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.2}}
-label{display:block;margin:15px 0 9px;color:#00ff88}
-textarea{
- width:100%;height:125px;resize:vertical;
- background:#020a07;color:#aaffcc;
- border:1px solid #176c46;border-radius:9px;
- padding:15px;font:16px 'Share Tech Mono';
- outline:none;
-}
-textarea:focus{border-color:#00ff88;box-shadow:0 0 12px #00ff8833}
-.result{color:#00ff88}
+label{display:block;margin:15px 0 9px;color:var(--accent)}
+textarea{width:100%;min-height:125px;resize:vertical;background:var(--field);color:var(--fieldText);border:1px solid var(--border);border-radius:9px;padding:15px;font:16px 'Share Tech Mono',monospace;outline:none}
+textarea:focus,input:focus{border-color:var(--accent);box-shadow:0 0 12px color-mix(in srgb,var(--accent) 20%,transparent)}
+.result{color:var(--accent)}
 .buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-button{
- flex:1;min-width:110px;padding:13px;
- background:#063c26;border:1px solid #00ff88;
- border-radius:8px;color:#00ff88;
- font:14px 'Share Tech Mono';cursor:pointer;
- transition:.2s;
+button{flex:1;min-width:110px;min-height:44px;padding:12px;background:var(--button);border:1px solid var(--accent);border-radius:8px;color:var(--buttonText);font:14px 'Share Tech Mono',monospace;cursor:pointer;transition:.2s}
+button:hover,button:focus-visible{background:var(--accent);color:var(--bg);box-shadow:0 0 15px color-mix(in srgb,var(--accent) 35%,transparent);outline:none}
+button.active{background:var(--accent);color:var(--bg)}
+button.secondary{background:transparent}
+.top-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.top-actions button{flex:0 1 auto;min-width:100px}
+#light{width:85px;height:85px;border-radius:50%;margin:15px auto;background:var(--card);border:3px solid var(--border);transition:.1s}
+#light.on{background:var(--accent);box-shadow:0 0 25px var(--accent),0 0 70px var(--accent)}
+.center{text-align:center}.small{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.grid div{padding:9px;background:var(--card);border:1px solid var(--border);border-radius:5px;text-align:center}
+.section-title{color:var(--accent);margin:0 0 8px}
+.history-list{display:grid;gap:8px;margin-top:12px}
+.history-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow-wrap:anywhere}
+.history-item small{display:block;color:var(--muted);margin-top:4px}
+.history-item button{min-width:72px;flex:0 0 auto;padding:8px}
+.game-question{font-family:Orbitron,sans-serif;font-size:clamp(28px,7vw,42px);color:var(--accent);text-align:center;padding:16px;letter-spacing:5px}
+.game-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.game-options button{font-size:18px}
+.stats{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;color:var(--muted);margin:10px 0}
+footer{text-align:center;color:var(--muted);padding:25px;font-size:12px}
+.hidden{display:none!important}
+@media(max-width:600px){
+ body{padding:10px 10px 22px}
+ header{padding:12px 0}
+ .subtitle{letter-spacing:1.5px;font-size:12px}
+ .panel{padding:15px;margin:12px 0;border-radius:12px}
+ textarea{min-height:112px;font-size:16px;padding:12px}
+ .buttons{gap:8px}
+ .buttons button{min-width:calc(50% - 4px);padding:13px 8px;font-size:13px}
+ .top-actions{justify-content:center}
+ .top-actions button{flex:1}
+ .grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+ .grid div{padding:8px 4px;font-size:13px}
+ .game-options{grid-template-columns:1fr 1fr}
+ .history-item{grid-template-columns:1fr auto}
 }
-button:hover{background:#00ff88;color:#001b0d;box-shadow:0 0 15px #00ff88}
-button.active{background:#00ff88;color:#001b0d}
-#light{
- width:85px;height:85px;border-radius:50%;
- margin:15px auto;background:#10251b;
- border:3px solid #176c46;
- transition:.1s;
-}
-#light.on{background:#00ff88;box-shadow:0 0 25px #00ff88,0 0 70px #00ff88}
-.center{text-align:center}
-.small{font-size:12px;color:#6bba99}
-table{width:100%;border-collapse:collapse;text-align:center}
-td,th{border:1px solid #176c46;padding:8px}
-th{color:#00ff88}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
-.grid div{padding:9px;background:#041e12;border:1px solid #145c39;border-radius:5px}
-footer{text-align:center;color:#39785b;padding:25px;font-size:12px}
+@media(max-width:360px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.game-options{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-
 <header>
- <div class="status center" style="justify-content:center">
-  <span class="dot"></span> SYSTEM ONLINE
- </div>
+ <div class="status center" style="justify-content:center"><span class="dot"></span> SYSTEM ONLINE</div>
  <h1>MORSE CODE PRO</h1>
- <div class="subtitle">COMMUNICATION TERMINAL v2.0</div>
+ <div class="subtitle">COMMUNICATION TERMINAL v3.0</div>
+ <div class="top-actions" style="margin-top:18px">
+  <button class="secondary" id="themeBtn" onclick="toggleTheme()">☀️ MODE TERANG</button>
+ </div>
 </header>
 
-<div class="panel">
+<section class="panel">
  <div class="status"><span class="dot"></span> TRANSLATOR SYSTEM</div>
-
- <label>INPUT TEXT / MORSE CODE</label>
- <textarea id="input" placeholder="Masukkan pesan di sini..."></textarea>
-
+ <label for="input">INPUT TEXT / MORSE CODE</label>
+ <textarea id="input" placeholder="Masukkan pesan di sini..." autocomplete="off"></textarea>
  <div class="buttons">
   <button class="active" id="textMode" onclick="setMode('text')">TEXT → MORSE</button>
   <button id="morseMode" onclick="setMode('morse')">MORSE → TEXT</button>
  </div>
-
- <label>TRANSLATION OUTPUT</label>
+ <label for="output">TRANSLATION OUTPUT</label>
  <textarea id="output" class="result" readonly placeholder="Hasil terjemahan..."></textarea>
-
  <div class="buttons">
-  <button onclick="translate()">⚡ TRANSLATE</button>
+  <button onclick="translate(true)">⚡ TRANSLATE & SIMPAN</button>
   <button onclick="copyOutput()">▣ COPY</button>
   <button onclick="clearAll()">✕ CLEAR</button>
  </div>
-</div>
+</section>
 
-<div class="panel center">
+<section class="panel center">
  <div class="status" style="justify-content:center">SIGNAL TRANSMISSION</div>
  <div id="light"></div>
  <p id="signalText" class="small">READY TO TRANSMIT</p>
  <div class="buttons">
-  <button onclick="playSound()">▶ PLAY MORSE</button>
+  <button onclick="playSound()">▶ PLAY MORSE + GETAR</button>
   <button onclick="stopSound()">■ STOP</button>
  </div>
-</div>
+ <p class="small">Getaran memerlukan browser dan perangkat yang mendukung. Jika tidak terasa, audio tetap dapat dimainkan.</p>
+</section>
 
-<div class="panel">
+<section class="panel">
+ <div class="status">TRANSLATION HISTORY</div>
+ <p class="small">Riwayat tersimpan di browser perangkat ini.</p>
+ <div id="historyList" class="history-list"><p class="small">Belum ada riwayat.</p></div>
+ <div class="buttons"><button class="secondary" onclick="clearHistory()">HAPUS RIWAYAT</button></div>
+</section>
+
+<section class="panel">
+ <div class="status">MORSE TRAINING GAME</div>
+ <p class="small">Tebak huruf atau angka dari kode Morse berikut.</p>
+ <div class="stats"><span>SKOR: <b id="score">0</b></span><span>BENAR: <b id="correct">0</b></span><span>LEVEL: <b id="level">1</b></span></div>
+ <div id="gameQuestion" class="game-question">...</div>
+ <div id="gameOptions" class="game-options"></div>
+ <p id="gameFeedback" class="small center" aria-live="polite">Tekan MULAI GAME untuk bermain.</p>
+ <div class="buttons"><button onclick="startGame()">▶ MULAI / SOAL BERIKUTNYA</button></div>
+</section>
+
+<section class="panel">
  <div class="status">MORSE CODE DICTIONARY</div>
  <p class="small">REFERENSI KODE INTERNASIONAL</p>
  <div class="grid" id="dictionary"></div>
-</div>
+</section>
 
-<footer>
- MORSE CODE PRO © 2026<br>
- SECURE COMMUNICATION TERMINAL
-</footer>
+<footer>MORSE CODE PRO © 2026<br>SECURE COMMUNICATION TERMINAL · VERSION 3.0</footer>
 </div>
-
 <script>
 const codes={
- A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',
- F:'..-.',G:'--.',H:'....',I:'..',J:'.---',
- K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',
- P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',
+ A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',
+ K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',
  U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..',
- 0:'-----',1:'.----',2:'..---',3:'...--',
- 4:'....-',5:'.....',6:'-....',7:'--...',
- 8:'---..',9:'----.',
- '.':'.-.-.-',',':'--..--','?':'..--..',
- '!':'-.-.--','/':'-..-.','-':'-....-',
- '(':'-.--.',')':'-.--.-',':':'---...',
- ';':'-.-.-.','=':'-...-','+':'.-.-.',
- '@':'.--.-.','&':'.-...'
+ 0:'-----',1:'.----',2:'..---',3:'...--',4:'....-',5:'.....',6:'-....',7:'--...',8:'---..',9:'----.',
+ '.':'.-.-.-',',':'--..--','?':'..--..','!':'-.-.--','/':'-..-.','-':'-....-',
+ '(':'-.--.',')':'-.--.-',':':'---...',';':'-.-.-.','=':'-...-','+':'.-.-.','@':'.--.-.','&':'.-...'
 };
+const reverse={};Object.keys(codes).forEach(k=>reverse[codes[k]]=k);
+let mode='text',audioContext=null,oscillator=null,playing=false,stopRequested=false;
+let score=0,correct=0,currentAnswer='';
+const input=document.getElementById('input'),output=document.getElementById('output');
+const light=document.getElementById('light'),signalText=document.getElementById('signalText');
 
-const reverse={};
-Object.keys(codes).forEach(k=>reverse[codes[k]]=k);
-
-let mode='text';
-let audioContext=null;
-let oscillator=null;
-let playing=false;
-let stopRequested=false;
-
-const input=document.getElementById('input');
-const output=document.getElementById('output');
-const light=document.getElementById('light');
-const signalText=document.getElementById('signalText');
-
-function setMode(m){
- mode=m;
- document.getElementById('textMode').classList.toggle('active',m==='text');
- document.getElementById('morseMode').classList.toggle('active',m==='morse');
- translate();
-}
-
-function translate(){
+function setMode(m){mode=m;document.getElementById('textMode').classList.toggle('active',m==='text');document.getElementById('morseMode').classList.toggle('active',m==='morse');translate(false)}
+function translate(save=false){
  const value=input.value.toUpperCase();
  if(mode==='text'){
-  output.value=value.split('').map(c=>{
-   if(c===' ')return '/';
-   return codes[c]||'?';
-  }).join(' ');
+  output.value=value.split('').map(c=>c===' '?'/' :(codes[c]||'?')).join(' ');
  }else{
-  output.value=value.trim().split(/\s*\/\s*/).map(word=>
-   word.trim().split(/\s+/).filter(Boolean).map(c=>reverse[c]||'?').join('')
-  ).join(' ');
+  output.value=value.trim().split(/\s*\/\s*/).map(word=>word.trim().split(/\s+/).filter(Boolean).map(c=>reverse[c]||'?').join('')).join(' ');
  }
+ if(save && input.value.trim() && output.value.trim())addHistory(mode==='text'?input.value:input.value,output.value,mode);
 }
-
-input.addEventListener('input',translate);
-
+input.addEventListener('input',()=>translate(false));
 function copyOutput(){
  if(!output.value)return;
- navigator.clipboard.writeText(output.value)
- .then(()=>alert('Hasil berhasil disalin!'))
- .catch(()=>{
-  output.select();
-  document.execCommand('copy');
-  alert('Hasil berhasil disalin!');
- });
+ if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(output.value).then(()=>alert('Hasil berhasil disalin!')).catch(fallbackCopy)}
+ else fallbackCopy();
 }
-
-function clearAll(){
- stopSound();
- input.value='';
- output.value='';
-}
-
-function sleep(ms){
- return new Promise(resolve=>setTimeout(resolve,ms));
-}
-
+function fallbackCopy(){output.select();try{document.execCommand('copy');alert('Hasil berhasil disalin!')}catch(e){alert('Tidak dapat menyalin otomatis. Silakan salin teks secara manual.')}}
+function clearAll(){stopSound();input.value='';output.value=''}
+function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+function vibrate(pattern){if(navigator.vibrate){try{navigator.vibrate(pattern)}catch(e){}}}
 async function playTone(duration){
  if(stopRequested)return;
- const ctx=audioContext;
- oscillator=ctx.createOscillator();
- const gain=ctx.createGain();
- oscillator.type='sine';
- oscillator.frequency.value=650;
- gain.gain.value=0.12;
- oscillator.connect(gain);
- gain.connect(ctx.destination);
- light.classList.add('on');
- signalText.textContent='TRANSMITTING SIGNAL...';
- oscillator.start();
- await sleep(duration);
- try{oscillator.stop()}catch(e){}
- oscillator=null;
- light.classList.remove('on');
- await sleep(100);
+ const ctx=audioContext;oscillator=ctx.createOscillator();const gain=ctx.createGain();
+ oscillator.type='sine';oscillator.frequency.value=650;gain.gain.value=0.12;
+ oscillator.connect(gain);gain.connect(ctx.destination);light.classList.add('on');
+ signalText.textContent='TRANSMITTING SIGNAL...';oscillator.start();await sleep(duration);
+ try{oscillator.stop()}catch(e){}oscillator=null;light.classList.remove('on');await sleep(100);
 }
-
 async function playSound(){
  if(playing)return;
  const morse=mode==='text'?output.value:input.value.trim();
- if(!morse){
-  alert('Masukkan teks atau kode Morse terlebih dahulu!');
-  return;
- }
- playing=true;
- stopRequested=false;
+ if(!morse){alert('Masukkan teks atau kode Morse terlebih dahulu!');return}
+ playing=true;stopRequested=false;
  try{
-  audioContext=new (window.AudioContext||window.webkitAudioContext)();
-  await audioContext.resume();
-
+  audioContext=new (window.AudioContext||window.webkitAudioContext)();await audioContext.resume();
   for(const char of morse){
    if(stopRequested)break;
-   if(char==='.'){
-    await playTone(120);
-   }else if(char==='-'){
-    await playTone(360);
-   }else if(char==='/'){
-    await sleep(700);
-   }else if(char===' '){
-    await sleep(250);
-   }else{
-    await sleep(100);
-   }
+   if(char==='.' ){vibrate(120);await playTone(120)}
+   else if(char==='-'){vibrate(360);await playTone(360)}
+   else if(char==='/'){vibrate(0);await sleep(700)}
+   else if(char===' '){await sleep(250)}
+   else{await sleep(100)}
   }
- }catch(e){
-  alert('Browser tidak mendukung audio.');
- }
- if(audioContext){
-  await audioContext.close().catch(()=>{});
-  audioContext=null;
- }
- light.classList.remove('on');
- signalText.textContent=stopRequested?'TRANSMISSION STOPPED':'TRANSMISSION COMPLETE';
- playing=false;
+ }catch(e){alert('Browser tidak mendukung audio.')}
+ if(audioContext){await audioContext.close().catch(()=>{});audioContext=null}
+ light.classList.remove('on');signalText.textContent=stopRequested?'TRANSMISSION STOPPED':'TRANSMISSION COMPLETE';
+ vibrate(0);playing=false;
 }
+function stopSound(){stopRequested=true;if(oscillator){try{oscillator.stop()}catch(e){}oscillator=null}vibrate(0);light.classList.remove('on');signalText.textContent='SIGNAL STOPPED'}
 
-function stopSound(){
- stopRequested=true;
- if(oscillator){
-  try{oscillator.stop()}catch(e){}
-  oscillator=null;
- }
- light.classList.remove('on');
- signalText.textContent='SIGNAL STOPPED';
+function getHistory(){try{return JSON.parse(localStorage.getItem('morseHistory')||'[]')}catch(e){return []}}
+function addHistory(source,result,kind){
+ let items=getHistory();items.unshift({source,result,kind,date:new Date().toLocaleString('id-ID')});
+ items=items.slice(0,30);try{localStorage.setItem('morseHistory',JSON.stringify(items))}catch(e){}
+ renderHistory();
 }
+function renderHistory(){
+ const box=document.getElementById('historyList'),items=getHistory();
+ if(!items.length){box.innerHTML='<p class="small">Belum ada riwayat.</p>';return}
+ box.innerHTML=items.map((item,i)=>`<div class="history-item"><div><b>${escapeHtml(item.source)}</b><small>${escapeHtml(item.result)} · ${escapeHtml(item.date)}</small></div><button onclick="loadHistory(${i})">BUKA</button></div>`).join('');
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function loadHistory(i){const item=getHistory()[i];if(!item)return;input.value=item.source;mode=item.kind;setMode(item.kind);translate(false);output.value=item.result;window.scrollTo({top:0,behavior:'smooth'})}
+function clearHistory(){if(confirm('Hapus semua riwayat terjemahan?')){localStorage.removeItem('morseHistory');renderHistory()}}
 
-document.getElementById('dictionary').innerHTML=
- Object.entries(codes).map(([k,v])=>
- `<div><b style="color:#00ff88">${k}</b> = ${v}</div>`
- ).join('');
+function toggleTheme(){
+ document.body.classList.toggle('light');const lightMode=document.body.classList.contains('light');
+ document.getElementById('themeBtn').textContent=lightMode?'🌙 MODE GELAP':'☀️ MODE TERANG';
+ document.querySelector('meta[name="theme-color"]').content=lightMode?'#eef8f2':'#03090d';
+ try{localStorage.setItem('morseTheme',lightMode?'light':'dark')}catch(e){}
+}
+try{if(localStorage.getItem('morseTheme')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='🌙 MODE GELAP';document.querySelector('meta[name="theme-color"]').content='#eef8f2'}}catch(e){}
 
+function startGame(){
+ const keys=Object.keys(codes).filter(k=>/^[A-Z0-9]$/.test(k));
+ currentAnswer=keys[Math.floor(Math.random()*keys.length)];
+ document.getElementById('gameQuestion').textContent=codes[currentAnswer];
+ const options=[currentAnswer];
+ while(options.length<4){const candidate=keys[Math.floor(Math.random()*keys.length)];if(!options.includes(candidate))options.push(candidate)}
+ for(let i=options.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[options[i],options[j]]=[options[j],options[i]]}
+ const box=document.getElementById('gameOptions');box.innerHTML='';
+ options.forEach(option=>{const b=document.createElement('button');b.textContent=option;b.onclick=()=>answerGame(option,b);box.appendChild(b)});
+ document.getElementById('gameFeedback').textContent='Pilih jawaban yang benar!';
+}
+function answerGame(choice,button){
+ const buttons=[...document.querySelectorAll('#gameOptions button')];buttons.forEach(b=>b.disabled=true);
+ if(choice===currentAnswer){score+=10;correct++;document.getElementById('gameFeedback').textContent='BENAR! +10 poin';button.classList.add('active')}
+ else{document.getElementById('gameFeedback').textContent='Belum tepat. Jawaban: '+currentAnswer;buttons.forEach(b=>{if(b.textContent===currentAnswer)b.classList.add('active')})}
+ document.getElementById('score').textContent=score;document.getElementById('correct').textContent=correct;
+ document.getElementById('level').textContent=Math.floor(score/50)+1;
+}
+document.getElementById('dictionary').innerHTML=Object.entries(codes).map(([k,v])=>`<div><b style="color:var(--accent)">${k}</b> = ${v}</div>`).join('');
+renderHistory();
 </script>
 </body>
 </html>
