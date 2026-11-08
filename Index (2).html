@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0a18">
+<title>MORSE CODE PRO — Gaming Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+ --bg:#0b0a18;--panel:#141329;--panel2:#1b1935;--text:#f5f3ff;--muted:#a5a1c4;
+ --line:rgba(167,139,250,.18);--purple:#a855f7;--pink:#ec4899;--cyan:#22d3ee;
+ --green:#4ade80;--shadow:0 18px 50px rgba(0,0,0,.28);
+}
+body.light{--bg:#f4f2ff;--panel:#fff;--panel2:#eeeaff;--text:#211a3b;--muted:#70698c;--line:rgba(109,75,180,.18);--shadow:0 16px 40px rgba(57,38,110,.10)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,rgba(168,85,247,.15),transparent 34%),radial-gradient(ellipse at 90% 15%,rgba(34,211,238,.10),transparent 30%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1180px;margin:auto;padding:26px 24px 110px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--purple),var(--pink));display:grid;place-items:center;font-size:23px;box-shadow:0 0 28px #a855f755}
+.brand h1{font:800 19px Orbitron,sans-serif;letter-spacing:1px;margin:0}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:5px}
+.header-actions{display:flex;gap:10px;align-items:center}
+.icon-btn,.ghost{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:11px 14px}
+.hero{border:1px solid var(--line);border-radius:24px;padding:28px;background:linear-gradient(120deg,rgba(168,85,247,.18),rgba(34,211,238,.07)),var(--panel);box-shadow:var(--shadow);position:relative;overflow:hidden;animation:rise .6s ease both}
+.hero:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-60px;top:-100px;background:radial-gradient(circle,rgba(236,72,153,.25),transparent 70%);pointer-events:none}
+.eyebrow{color:var(--cyan);font:700 11px Orbitron;letter-spacing:2px}
+.hero h2{font:800 clamp(24px,4vw,38px) Orbitron;margin:12px 0 8px;line-height:1.25}
+.hero p{color:var(--muted);margin:0;max-width:620px;line-height:1.65}
+.hero-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.level-bubble{min-width:145px;border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:15px 18px}
+.level-bubble strong{font:700 26px Orbitron;color:var(--cyan)}
+.level-bubble span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 26px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;animation:rise .65s ease both}
+.stat .ico{font-size:21px}.stat strong{display:block;font:700 24px Orbitron;margin:12px 0 4px}.stat small{color:var(--muted)}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px;gap:12px}
+.section-head h3{font:700 15px Orbitron;letter-spacing:.6px;margin:0}
+.section-head span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);animation:rise .5s ease both}
+.card h3{font:700 13px Orbitron;letter-spacing:.8px;margin:0 0 16px}
+.field-label{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:1px;margin:14px 0 8px}
+textarea{width:100%;min-height:112px;resize:vertical;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:13px;padding:14px;outline:none;line-height:1.6}
+textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px #a855f722}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;font-size:12px;letter-spacing:.4px;color:white;background:linear-gradient(110deg,var(--purple),var(--pink));box-shadow:0 8px 22px #a855f733;transition:transform .2s,filter .2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.btn.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text);box-shadow:none}
+.btn.cyan{background:linear-gradient(110deg,#0891b2,#2563eb)}
+.output{min-height:95px;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--cyan);line-height:1.7}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-tile{border:1px solid var(--line);background:var(--panel2);border-radius:15px;padding:16px}
+.tool-tile strong{display:block;margin:8px 0 4px;font-size:13px}.tool-tile small{color:var(--muted);line-height:1.5}
+.progress{height:9px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:10px 0}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:99px;transition:width .5s}
+.history-list{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto}
+.history-item{display:flex;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:12px;background:var(--panel2);font-size:12px}
+.history-item small{color:var(--muted);display:block;margin-top:4px}
+.history-item button{border:0;background:transparent;color:var(--pink)}
+.game-question{font-size:25px;font:700 30px Orbitron;text-align:center;padding:20px;color:var(--cyan);letter-spacing:3px}
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.answer{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:14px;border-radius:12px;font-weight:700}
+.answer:hover{border-color:var(--cyan)}
+.feedback{min-height:24px;color:var(--muted);font-size:13px;margin:12px 0}
+.hidden{display:none!important}
+.page{display:none}.page.active{display:block}
+.bottom-nav{display:none}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:var(--panel2);border:1px solid var(--line);padding:12px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:10;font-size:13px;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{box-shadow:0 0 0 8px #a855f722}}
+@media(max-width:760px){
+ .app{padding:18px 14px 105px}header{margin-bottom:18px}.brand h1{font-size:15px}.logo{width:42px;height:42px}
+ .hero{padding:22px 18px}.stats{grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:14px}.stat strong{font-size:20px}
+ .grid{grid-template-columns:1fr}.card{padding:17px}.section-head{margin-top:22px}
+ .bottom-nav{display:flex;position:fixed;z-index:20;bottom:0;left:0;right:0;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(18px);border-top:1px solid var(--line);justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom))}
+ .bottom-nav button{background:transparent;border:0;color:var(--muted);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 8px}
+ .bottom-nav button b{font-size:19px;font-weight:400}.bottom-nav button.active{color:var(--cyan)}
+ .desktop-only{display:none}.answers{grid-template-columns:1fr 1fr}
+}
+@media(min-width:761px){.page.active{animation:rise .3s ease}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">⌁</div><div><h1>MORSE CODE PRO</h1><small>GAMING ACADEMY · V4.0</small></div></div>
+ <div class="header-actions"><button class="icon-btn" id="themeBtn" title="Ganti tema">☀️ / 🌙</button><button class="ghost desktop-only" onclick="showPage('dashboard')">Dashboard</button></div>
+</header>
+
+<main>
+<section class="page active" id="dashboard">
+ <div class="hero"><div class="hero-row"><div><div class="eyebrow">✦ TRAIN · DECODE · LEVEL UP</div><h2>MASTER THE<br>MORSE CODE.</h2><p>Asah kemampuan komunikasi rahasia. Terjemahkan pesan, dengarkan sinyal, dan naikkan levelmu setiap hari.</p></div><div class="level-bubble"><strong id="level">LVL 1</strong><span id="rank">CADET · PEMULA</span></div></div><div style="margin-top:20px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)"><span>PROGRESS LEVEL</span><span id="xpLabel">0 / 100 XP</span></div><div class="progress"><div id="xpBar"></div></div></div></div>
+ <div class="stats">
+  <div class="stat"><span class="ico">⚡</span><strong id="xpStat">0</strong><small>Total XP</small></div>
+  <div class="stat"><span class="ico">🎯</span><strong id="playedStat">0</strong><small>Soal dijawab</small></div>
+  <div class="stat"><span class="ico">🏆</span><strong id="correctStat">0</strong><small>Jawaban benar</small></div>
+  <div class="stat"><span class="ico">📚</span><strong id="historyStat">0</strong><small>Riwayat tersimpan</small></div>
+ </div>
+ <div class="section-head"><h3>YOUR TRAINING HUB</h3><span>Choose your mission</span></div>
+ <div class="tools">
+  <button class="tool-tile" onclick="showPage('translator')" style="text-align:left;color:var(--text)"><span>🔤</span><strong>Translator</strong><small>Ubah teks menjadi Morse dan sebaliknya.</small></button>
+  <button class="tool-tile" onclick="showPage('game')" style="text-align:left;color:var(--text)"><span>🎮</span><strong>Morse Challenge</strong><small>Jawab kuis dan kumpulkan XP.</small></button>
+  <button class="tool-tile" onclick="showPage('history')" style="text-align:left;color:var(--text)"><span>🗂️</span><strong>Translation Log</strong><small>Lihat kembali pesan yang pernah diterjemahkan.</small></button>
+  <button class="tool-tile" onclick="playDemo()" style="text-align:left;color:var(--text)"><span>🔊</span><strong>Signal Demo</strong><small>Dengarkan contoh sinyal Morse SOS.</small></button>
+ </div>
+</section>
+
+<section class="page" id="translator">
+ <div class="section-head"><h3>TRANSLATION TERMINAL</h3><span>TEXT ⇄ MORSE</span></div>
+ <div class="card">
+  <h3>⌁ INPUT MESSAGE</h3>
+  <label class="field-label" for="source">TEXT ATAU KODE MORSE</label>
+  <textarea id="source" placeholder="Ketik pesan di sini...&#10;Contoh: HALO DUNIA atau .... .- .-.. ---"></textarea>
+  <div class="actions"><button class="btn" onclick="translate('encode')">TEXT → MORSE</button><button class="btn cyan" onclick="translate('decode')">MORSE → TEXT</button><button class="btn secondary" onclick="document.getElementById('source').value=''">CLEAR</button></div>
+  <label class="field-label">TRANSLATION OUTPUT</label><div class="output" id="result">Hasil terjemahan akan muncul di sini...</div>
+  <div class="actions"><button class="btn secondary" onclick="copyResult()">▣ COPY</button><button class="btn secondary" onclick="playOutput()">🔊 PLAY SIGNAL</button><button class="btn secondary" id="vibrateBtn" onclick="toggleVibration()">📳 GETARAN: ON</button></div>
+ </div>
+ <div class="section-head"><h3>QUICK SIGNAL</h3><span>Audio + vibration</span></div>
+ <div class="card"><div class="tools"><div class="tool-tile"><strong>🔊 Audio Morse</strong><small>Sinyal titik dan garis dimainkan melalui speaker perangkat.</small></div><div class="tool-tile"><strong>📳 Haptic feedback</strong><small>Getaran mengikuti pola sinyal jika perangkat mendukung.</small></div></div></div>
+</section>
+
+<section class="page" id="game">
+ <div class="section-head"><h3>MORSE CHALLENGE</h3><span>Earn XP · Build your rank</span></div>
+ <div class="card">
+  <div class="eyebrow">MISSION <span id="questionNo">01</span></div>
+  <div class="game-question" id="question">...</div>
+  <p style="text-align:center;color:var(--muted);font-size:12px">Pilih huruf atau angka yang sesuai dengan kode Morse.</p>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback">Siap untuk tantangan pertama?</div>
+  <div class="actions"><button class="btn secondary" onclick="nextQuestion()">SKIP QUESTION</button><button class="btn" onclick="playQuestion()">🔊 DENGARKAN</button></div>
+ </div>
+ <div class="section-head"><h3>YOUR ACHIEVEMENTS</h3><span>Keep practicing</span></div>
+ <div class="tools"><div class="tool-tile"><strong>🌱 First Signal</strong><small>Selesaikan soal pertamamu.</small></div><div class="tool-tile"><strong>🔥 Signal Streak</strong><small>Terus kumpulkan jawaban benar.</small></div></div>
+</section>
+
+<section class="page" id="history">
+ <div class="section-head"><h3>TRANSLATION HISTORY</h3><button class="ghost" onclick="clearHistory()">Hapus semua</button></div>
+ <div class="card"><div class="history-list" id="historyList"><div style="color:var(--muted);font-size:13px">Belum ada riwayat. Coba terjemahkan pesan pertamamu!</div></div></div>
+</section>
+</main>
+</div>
+<nav class="bottom-nav">
+ <button class="active" data-page="dashboard" onclick="showPage('dashboard')"><b>⌂</b>Home</button>
+ <button data-page="translator" onclick="showPage('translator')"><b>⌁</b>Translate</button>
+ <button data-page="game" onclick="showPage('game')"><b>🎮</b>Game</button>
+ <button data-page="history" onclick="showPage('history')"><b>▤</b>History</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+const MORSE={A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.',' ':'/'};
+const REVERSE=Object.fromEntries(Object.entries(MORSE).map(([k,v])=>[v,k]));
+const $=id=>document.getElementById(id);
+let vibrationOn=true,lastOutput='',audioCtx=null;
+let history=JSON.parse(localStorage.getItem('morseHistory')||'[]');
+let stats=JSON.parse(localStorage.getItem('morseStats')||'{"xp":0,"played":0,"correct":0}');
+function save(){localStorage.setItem('morseHistory',JSON.stringify(history));localStorage.setItem('morseStats',JSON.stringify(stats));renderStats();renderHistory()}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2100)}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='history')renderHistory()}
+function translate(mode){
+ const raw=$('source').value.trim();if(!raw){toast('Masukkan pesan terlebih dahulu');return}
+ let out='';
+ if(mode==='encode'){out=raw.toUpperCase().split('').map(c=>MORSE[c]??'').filter((v,i)=>v!==''||raw[i]===' ').join(' ').replace(/\\s+\\/\\s+/g,' / ')}
+ else{out=raw.trim().split(/\s+/).map(code=>code==='/'?' ':REVERSE[code]??'�').join('').replace(/�/g,'?')}
+ lastOutput=out;$('result').textContent=out;history.unshift({mode,input:raw,output:out,time:new Date().toLocaleString('id-ID')});history=history.slice(0,40);save();toast('Terjemahan tersimpan di riwayat')}
+function copyResult(){if(!lastOutput){toast('Belum ada hasil untuk disalin');return}navigator.clipboard?.writeText(lastOutput).then(()=>toast('Hasil disalin')).catch(()=>toast('Salin manual hasil terjemahan'))}
+function toggleVibration(){vibrationOn=!vibrationOn;$('vibrateBtn').textContent='📳 GETARAN: '+(vibrationOn?'ON':'OFF');toast('Getaran '+(vibrationOn?'aktif':'nonaktif'))}
+function audio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){toast('Audio tidak didukung browser ini');return null}audioCtx=audioCtx||new AC();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function beep(duration=0.12,delay=0){const ctx=audio();if(!ctx)return;const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=650;gain.gain.setValueAtTime(.0001,ctx.currentTime+delay);gain.gain.exponentialRampToValueAtTime(.13,ctx.currentTime+delay+.01);gain.gain.setValueAtTime(.13,ctx.currentTime+delay+duration-.015);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+duration);osc.connect(gain);gain.connect(ctx.destination);osc.start(ctx.currentTime+delay);osc.stop(ctx.currentTime+delay+duration)}
+function playMorse(code){let t=0;for(const ch of code){if(ch==='.'||ch==='-'){const d=ch==='.'?.12:.36;beep(d,t);if(vibrationOn&&navigator.vibrate)setTimeout(()=>navigator.vibrate(ch==='.'?70:180),Math.max(0,t*1000));t+=d+.12}else{t+=.25}}}
+function playOutput(){if(!lastOutput){toast('Terjemahkan pesan dahulu');return}playMorse(lastOutput.replace(/[^.-]/g,''))}
+function playDemo(){playMorse('... --- ...');toast('Memainkan sinyal SOS')}
+function playQuestion(){playMorse(currentCode)}
+function renderStats(){const xp=stats.xp||0,level=Math.floor(xp/100)+1,within=xp%100;$('xpStat').textContent=xp;$('playedStat').textContent=stats.played||0;$('correctStat').textContent=stats.correct||0;$('historyStat').textContent=history.length;$('level').textContent='LVL '+level;$('rank').textContent=level>=10?'MORSE LEGEND':level>=5?'SIGNAL EXPERT':level>=3?'CODE SPECIALIST':'CADET · PEMULA';$('xpLabel').textContent=within+' / 100 XP';$('xpBar').style.width=within+'%'}
+function renderHistory(){const el=$('historyList');if(!el)return;if(!history.length){el.innerHTML='<div style="color:var(--muted);font-size:13px">Belum ada riwayat. Coba terjemahkan pesan pertamamu!</div>';return}el.innerHTML=history.map((h,i)=>`<div class="history-item"><div><strong>${h.mode==='encode'?'TEXT → MORSE':'MORSE → TEXT'}</strong><small>${escapeHtml(h.input)}<br>→ ${escapeHtml(h.output)}<br>${h.time}</small></div><button aria-label="hapus riwayat" onclick="deleteHistory(${i})">✕</button></div>`).join('')}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function deleteHistory(i){history.splice(i,1);save()}
+function clearHistory(){if(confirm('Hapus seluruh riwayat terjemahan?')){history=[];save();toast('Riwayat dihapus')}}
+$('themeBtn').addEventListener('click',()=>{document.body.classList.toggle('light');localStorage.setItem('morseTheme',document.body.classList.contains('light')?'light':'dark')});
+if(localStorage.getItem('morseTheme')==='light')document.body.classList.add('light');
+
+const pool=Object.entries(MORSE).filter(([k])=>k!==' ');
+let currentAnswer='A',currentCode='.-';
+function nextQuestion(){
+ const item=pool[Math.floor(Math.random()*pool.length)];currentAnswer=item[0];currentCode=item[1];$('question').textContent=currentCode;$('questionNo').textContent=String((stats.played||0)+1).padStart(2,'0');$('feedback').textContent='Pilih jawaban yang benar.';
+ const choices=new Set([currentAnswer]);while(choices.size<4)choices.add(pool[Math.floor(Math.random()*pool.length)][0]);
+ const arr=[...choices].sort(()=>Math.random()-.5);$('answers').innerHTML=arr.map(a=>`<button class="answer" onclick="answerQuestion('${a}')">${a}</button>`).join('');
+}
+function answerQuestion(choice){stats.played=(stats.played||0)+1;if(choice===currentAnswer){stats.correct=(stats.correct||0)+1;stats.xp=(stats.xp||0)+10;$('feedback').textContent='✓ BENAR! +10 XP — Kerja bagus!';$('feedback').style.color='var(--green)';toast('+10 XP diperoleh!')}else{$('feedback').textContent='Belum tepat. Jawaban yang benar: '+currentAnswer;$('feedback').style.color='var(--pink)'}save();setTimeout(nextQuestion,950)}
+renderStats();renderHistory();nextQuestion();
+</script>
+</body>
+</html>
